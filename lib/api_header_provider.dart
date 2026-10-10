@@ -134,12 +134,14 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 class ApiHeaderProvider {
-  // Key Server dari file Signing.txt
+  // ==========================================
+  // KEY SERVER (dari Signing.txt)
+  // ==========================================
   static const String serverKey =
       '4bea70d369fd368d3e3bf6d8da57742ed5e6e470d667ff3171c67e22aaf23ec2';
 
   // ==========================================
-  // DATA IDENTITAS PERANGKAT (BOLEH HARDCODE)
+  // DATA IDENTITAS PERANGKAT
   // ==========================================
   static const String authorizedDeviceId =
       '7913b82ba0bccc52aab63640905016cdb0b42f81b2b8d0a8327be5e3ab622079';
@@ -147,11 +149,123 @@ class ApiHeaderProvider {
   static const String authorizedWebVersion = '153.0.4234.48';
   static const String authorizedPublicIp = '202.46.68.255';
   static const String authorizedCid = 'BVZQHAECHA5dSgBQUA==';
-  static const String authorizedPcSpec =
-      'ew0KICAiZ2VuZXJhdGVkIjogIjIwMjYtMDktMjggMjA6MzA6MDQiLA0KICAic3lzdGVtIjogew0K%0D%0AICAgICJjb21wdXRlcl9uYW1lIjogIkFaVEVDSE1BSU4iLA0KICAgICJ1c2VyX25hbWUiOiAibXVo%0D%0AYW0iLA0KICAgICJ3aW5kb3dzX3ZlcnNpb24iOiAiV2luZG93cyAxMSBQcm8gMjVIMiIsDQogICAg%0D%0AIndpbmRvd3NfYnVpbGQiOiAiMjYyMDAgKDI1SDIpLjg4OTQiLA0KICAgICJhcmNoaXRlY3R1cmUi%0D%0AOiAieDY0ICg2NC1iaXQgT1MpIC0gUnVubmluZyAzMi1iaXQgcHJvY2VzcyAoV29XNjQpIiwNCiAg%0D%0AICAidXB0aW1lIjogIjEgZGF5cywgMTAgaG91cnMsIDU1IG1pbnV0ZXMsIDQxIHNlY29uZHMiLA0K%0D%0AICAgICJpbnN0YWxsX2RhdGUiOiAiMjAyNS0xMi0yNyAxODo1NTo0MSIsDQogICAgImRldmljZV9p%0D%0AZCI6ICJCNzYwNDFCOS04NjkzLTRBNjItODA1Mi1DNkEwQjVBRTkzOTUiLA0KICAgICJwcm9kdWN0%0D%0AX2lkIjogIjAwMzMxLTEwMDAwLTAwMDAxLUFBNzQyIiwNCiAgICAicmVnaXN0ZXJlZF9vd25lciI6%0D%0AICJtdWhhbW1hZGZhZGlsbGFoMjAxNUBnbWFpbC5jb20iLA0KICAgICJyZWdpc3RlcmVkX29yZ2Fu%0D%0AaXphdGlvbiI6ICIiLA0KICAgICJvc19mdWxsX3ZlcnNpb24iOiAiMTAuMC4yNjIwMC44ODk0IiwN%0D%0ACiAgICAib3NfYnVpbGRfbnVtYmVyIjogMjYyMDAsDQogICAgIm9zX3ViciI6IDg4OTQsDQogICAg%0D%0AIm9zX2NvZGVuYW1lIjogIkdlcm1hbml1bSIsDQogICAgIm9zX3JlbGVhc2UiOiAiMjVIMiIsDQog%0D%0AICAgIm9zX2xhbmd1YWdlIjogIkVuZ2xpc2ggKFVuaXRlZCBTdGF0ZXMpIiwNCiAgICAib3NfaW5z%0D%0AdGFsbGVyX2xhbmd1YWdlIjogIkVuZ2xpc2ggKFVuaXRlZCBTdGF0ZXMpIiwNCiAgICAib3Nfc2Vy%0D%0AdmljZV9wYWNrIjogIi0iLA0KICAgICJvc19yb290IjogIkM6XFxXSU5ET1dTIg0KICB9LA0KICAi%0D%0AaGFyZHdhcmUiOiB7DQogICAgImNwdSI6IHsNCiAgICAgICJuYW1lIjogIkludGVsKFIpIENvcmUo%0D%0AVE0pIGk3LTQ3OTAgQ1BVIEAgMy42MEdIeiIsDQogICAgICAic2VyaWFsIjogIkJGRUJGQkZGMDAw%0D%0AMzA2QzMiDQogICAgfSwNCiAgICAibWVtb3J5Ijogew0KICAgICAgInRvdGFsX2diIjogMTUuOTEs%0D%0ADQogICAgICAiYXZhaWxhYmxlX2diIjogNS40MSwNCiAgICAgICJtb2R1bGVzIjogWw0KICAgICAg%0D%0AICB7DQogICAgICAgICAgIm5hbWUiOiAiRElNTTM6IEtpbmdzdG9uICg0IEdCIEREUjMtMTMzMyBE%0D%0ARFIzIFNEUkFNKSIsDQogICAgICAgICAgInNlcmlhbF9udW1iZXIiOiAiMDJDMDAwMDAwMDAwIg0K%0D%0AICAgICAgICB9LA0KICAgICAgICB7DQogICAgICAgICAgIm5hbWUiOiAiRElNTTE6IEtpbmdzdG9u%0D%0AICg0IEdCIEREUjMtMTMzMyBERFIzIFNEUkFNKSIsDQogICAgICAgICAgInNlcmlhbF9udW1iZXIi%0D%0AOiAiMDEzMDZDMDIwMDY1Ig0KICAgICAgICB9LA0KICAgICAgICB7DQogICAgICAgICAgIm5hbWUi%0D%0AOiAiRElNTTQ6IEtpbmdzdG9uICg0IEdCIEREUjMtMTMzMyBERFIzIFNEUkFNKSIsDQogICAgICAg%0D%0AICAgInNlcmlhbF9udW1iZXIiOiAiMDI5MDAwMDAwMDAwIg0KICAgICAgICB9LA0KICAgICAgICB7%0D%0ADQogICAgICAgICAgIm5hbWUiOiAiRElNTTI6IEh5bml4L0h5dW5kYWkgKDQgR0IgRERSMy0xMzMz%0D%0AIEREUjMgU0RSQU0pIiwNCiAgICAgICAgICAic2VyaWFsX251bWJlciI6ICIwMDAwMDAwMDAwMDAi%0D%0ADQogICAgICAgIH0NCiAgICAgIF0NCiAgICB9LA0KICAgICJncHVzIjogWw0KICAgICAgew0KICAg%0D%0AICAgICAibmFtZSI6ICJJbnRlbChSKSBIRCBHcmFwaGljcyA0NjAwIiwNCiAgICAgICAgInBucF9k%0D%0AZXZpY2VfaWQiOiAiUENJXFxWRU5fODA4NiZERVZfMDQxMiZTVUJTWVNfMDVBNDEwMjgmUkVWXzA2%0D%0AXFwzJjExNTgzNjU5JjAmMTAiDQogICAgICB9DQogICAgXSwNCiAgICAiZHJpdmVzIjogWw0KICAg%0D%0AICAgIkM6fE1pZGFzRm9yY2UgU1NEIDI1NkdCfFNOOiAyMDIyMTIyNDAwMDM4fFNZU1RFTSINCiAg%0D%0AICBdLA0KICAgICJtb3RoZXJib2FyZCI6IHsNCiAgICAgICJtYW51ZmFjdHVyZXIiOiAiRGVsbCBJ%0D%0AbmMuIiwNCiAgICAgICJwcm9kdWN0IjogIjAwVjYySCIsDQogICAgICAic2VyaWFsIjogIi9HWFo1%0D%0ASDgyL0NONzIyMDA1QjkwMFM4LyINCiAgICB9LA0KICAgICJjaGFzc2lzIjogew0KICAgICAgInN5%0D%0Ac3RlbV9tYW51ZmFjdHVyZXIiOiAiRGVsbCBJbmMuIiwNCiAgICAgICJzeXN0ZW1fbW9kZWwiOiAi%0D%0AT3B0aVBsZXggOTAyMCIsDQogICAgICAic3lzdGVtX2ZhbWlseSI6ICIiLA0KICAgICAgInN5c3Rl%0D%0AbV9za3UiOiAiMDVBNCINCiAgICB9LA0KICAgICJiaW9zIjogew0KICAgICAgInNlcmlhbCI6ICJH%0D%0AWFo1SDgyIg0KICAgIH0NCiAgfSwNCiAgIm5ldHdvcmsiOiB7DQogICAgImlwX2FkZHJlc3NlcyI6%0D%0AIFsNCiAgICAgICIxNzIuMzAuMjQwLjEiLA0KICAgICAgIjE5Mi4xNjguMTguNzQiDQogICAgXSwN%0D%0ACiAgICAibWFjX2FkZHJlc3NlcyI6IFsNCiAgICAgICJCbHVldG9vdGggRGV2aWNlIChQZXJzb25h%0D%0AbCBBcmVhIE5ldHdvcmspfDAwOjFBOjdEOkRBOjcxOjE1IiwNCiAgICAgICJJbnRlbChSKSBFdGhl%0D%0Acm5ldCBDb25uZWN0aW9uIEkyMTctTE18NjQ6MDA6NkE6ODA6MDk6RTgiLA0KICAgICAgIkh5cGVy%0D%0ALVYgVmlydHVhbCBFdGhlcm5ldCBBZGFwdGVyfDAwOjE1OjVEOkE5OkYzOkE0Ig0KICAgIF0NCiAg%0D%0AfSwNCiAgInNvZnR3YXJlIjogew0KICAgICJsYW5ndWFnZSI6ICJFbmdsaXNoIChVbml0ZWQgU3Rh%0D%0AdGVzKSIsDQogICAgInRpbWVfem9uZSI6ICJVVEMrMDc6MDAgKFNFIEFzaWEgU3RhbmRhcmQgVGlt%0D%0AZSkiLA0KICAgICJwcm9jZXNzX2NvdW50IjogMjk5LA0KICAgICJzZXJ2aWNlX2NvdW50IjogMzQw%0D%0ADQogIH0sDQogICJkaXNwbGF5Ijogew0KICAgICJyZXNvbHV0aW9uIjogIjE5MjB4MTA4MCIsDQog%0D%0AICAgImRwaSI6IDk2LA0KICAgICJhY3RpdmVfd2luZG93IjogIltBZG1pbmlzdHJhdG9yXSBQcm9q%0D%0AZWN0MSAtIERlbHBoaSAxMSAtIEZybU1haW4iDQogIH0sDQogICJkaXJlY3RvcmllcyI6IHsNCiAg%0D%0AICAiY3VycmVudCI6ICJDOlxcVXNlcnNcXG11aGFtXFxPbmVEcml2ZVxcRG9jdW1lbnRzXFxFbWJh%0D%0AcmNhZGVyb1xcU3R1ZGlvXFxQcm9qZWN0c1xcYnIgbmV3IHBjIGFyaVxcYnJcXFdpbjMyXFxSZWxl%0D%0AYXNlIiwNCiAgICAic3lzdGVtIjogIkM6XFxXSU5ET1dTXFxzeXN0ZW0zMiIsDQogICAgInRlbXAi%0D%0AOiAiQzpcXFVzZXJzXFxtdWhhbVxcQXBwRGF0YVxcTG9jYWxcXFRlbXBcXCINCiAgfQ0KfQ0K';
 
-  /// Menghitung HMAC-SHA256 sesuai rumus:
-  /// AppTimeStamp + '|' + Deviceidhwid + '|' + AppVersion
+  // ==========================================
+  // STRUKTUR JSON ASLI (Sesuai Arahan Backend)
+  // ==========================================
+  static final Map<String, dynamic> _pcSpecJson = {
+    "generated": "2026-09-28 20:30:04",
+    "system": {
+      "computer_name": "AZTECHMAIN",
+      "user_name": "muham",
+      "windows_version": "Windows 11 Pro 25H2",
+      "windows_build": "26200 (25H2).8894",
+      "architecture": "x64 (64-bit OS) - Running 32-bit process (WoW64)",
+      "uptime": "1 days, 10 hours, 55 minutes, 41 seconds",
+      "install_date": "2025-12-27 18:55:41",
+      "device_id": authorizedDeviceId,
+      "product_id": "00331-10000-00001-AA742",
+      "registered_owner": "muhammadfadillah2015@gmail.com",
+      "registered_organization": "",
+      "os_full_version": "10.0.26200.8894",
+      "os_build_number": 26200,
+      "os_ubr": 8894,
+      "os_codename": "Germanium",
+      "os_release": "25H2",
+      "os_language": "English (United States)",
+      "os_installer_language": "English (United States)",
+      "os_service_pack": "-",
+      "os_root": "C:\\WINDOWS"
+    },
+    "hardware": {
+      "cpu": {
+        "name": "Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz",
+        "serial": "BFEBFBFF000306C3"
+      },
+      "memory": {
+        "total_gb": 15.91,
+        "available_gb": 5.41,
+        "modules": [
+          {
+            "name": "DIMM3: Kingston (4 GB DDR3-1333 DDR3 SDRAM)",
+            "serial_number": "02C000000000"
+          },
+          {
+            "name": "DIMM1: Kingston (4 GB DDR3-1333 DDR3 SDRAM)",
+            "serial_number": "01306C020065"
+          },
+          {
+            "name": "DIMM4: Kingston (4 GB DDR3-1333 DDR3 SDRAM)",
+            "serial_number": "029000000000"
+          },
+          {
+            "name": "DIMM2: Hynix/Hyundai (4 GB DDR3-1333 DDR3 SDRAM)",
+            "serial_number": "000000000000"
+          }
+        ]
+      },
+      "gpus": [
+        {
+          "name": "Intel(R) HD Graphics 4600",
+          "pnp_device_id":
+              "PCI\\VEN_8086&DEV_0412&SUBSYS_05A41028&REV_06\\3&11583659&0&10"
+        }
+      ],
+      "drives": [
+        "C:|MidasForce SSD 256GB|SN: 2022122400038|SYSTEM"
+      ],
+      "motherboard": {
+        "manufacturer": "Dell Inc.",
+        "product": "00V62H",
+        "serial": "/GXZ5H82/CN722005B900S8/"
+      },
+      "chassis": {
+        "system_manufacturer": "Dell Inc.",
+        "system_model": "OptiPlex 9020",
+        "system_family": "",
+        "system_sku": "05A4"
+      },
+      "bios": {
+        "serial": "GXZ5H82"
+      }
+    },
+    "network": {
+      "ip_addresses": [
+        "172.30.240.1",
+        "192.168.18.74"
+      ],
+      "mac_addresses": [
+        "Bluetooth Device (Personal Area Network)|00:1A:7D:DA:71:15",
+        "Intel(R) Ethernet Connection I217-LM|64:00:6A:80:09:E8",
+        "Hyper-V Virtual Ethernet Adapter|00:15:5D:A9:F3:A4"
+      ]
+    },
+    "software": {
+      "language": "English (United States)",
+      "time_zone": "UTC+07:00 (SE Asia Standard Time)",
+      "process_count": 299,
+      "service_count": 340
+    },
+    "display": {
+      "resolution": "1920x1080",
+      "dpi": 96,
+      "active_window": "[Administrator] Project1 - Delphi 11 - FrmMain"
+    },
+    "directories": {
+      "current":
+          "C:\\Users\\muham\\OneDrive\\Documents\\Embarcadero\\Studio\\Projects\\br new pc ari\\br\\Win32\\Release",
+      "system": "C:\\WINDOWS\\system32",
+      "temp": "C:\\Users\\muham\\AppData\\Local\\Temp\\"
+    }
+  };
+
+  // Langsung encode objek Map ke Base64 murni tanpa karakter escape
+  static final String authorizedPcSpec =
+      base64Encode(utf8.encode(jsonEncode(_pcSpecJson)));
+
+  // ==========================================
+  // SIGNING
+  // ==========================================
   static String computeSign({
     required String timestamp,
     required String deviceId,
@@ -164,26 +278,26 @@ class ApiHeaderProvider {
     return digest.toString().toLowerCase();
   }
 
-  /// Membuat header lengkap
-  static Future<Map<String, String>> buildHeaders() async {
-    // 1. Timestamp detik dibuat dinamis
-    final currentTs = (DateTime.now().millisecondsSinceEpoch ~/ 1000)
-        .toString();
+  // ==========================================
+  // BUILD HEADERS
+  // ==========================================
+  static Future<Map<String, String>> buildHeaders({
+    String? contentType,
+  }) async {
+    final now = DateTime.now();
 
-    // 2. Hitung sign dinamis mengikuti timestamp baru
+    final ts1 = (now.millisecondsSinceEpoch ~/ 1000).toString();
+    final ts2 = now.millisecondsSinceEpoch.toString();
+
     final dynamicSign = computeSign(
-      timestamp: currentTs,
+      timestamp: ts1,
       deviceId: authorizedDeviceId,
       appVersion: authorizedAppVersion,
     );
 
-    // 3. Susun header
-    return {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Connection': 'keep-alive',
-      'x-ts': currentTs,
-      'x-ts2': currentTs,
+    final headers = <String, String>{
+      'x-ts': ts1,
+      'x-ts2': ts2,
       'x-sign': dynamicSign,
       'x-device-id': authorizedDeviceId,
       'x-app-version': authorizedAppVersion,
@@ -193,5 +307,25 @@ class ApiHeaderProvider {
       'x-cid': authorizedCid,
       'x-platform': 'windows',
     };
+
+    if (contentType != null) {
+      headers['Content-Type'] = contentType;
+    }
+
+    return headers;
+  }
+
+  // ==========================================
+  // HELPER DEBUG
+  // ==========================================
+  static void debugHeaders(Map<String, String> h) {
+    // ignore: avoid_print
+    print('===== REQUEST HEADERS =====');
+    h.forEach((k, v) {
+      // ignore: avoid_print
+      print('$k: $v');
+    });
+    // ignore: avoid_print
+    print('===========================');
   }
 }

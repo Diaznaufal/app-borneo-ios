@@ -11,20 +11,16 @@ import 'api_header_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. Kunci orientasi landscape (HANYA UNTUK ANDROID & IOS)
+  // 1. Kunci orientasi landscape absolut untuk iOS dan Android
   if (Platform.isAndroid || Platform.isIOS) {
-    try {
-      await SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    } catch (e) {
-      dev.log('Gagal set orientasi: $e', name: 'APP_TEST');
-    }
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
 
-  // 2. Proteksi Anti-Screenshot & Screen Record (Mobile Only)
-  if (Platform.isAndroid || Platform.isIOS) {
+  // 2. Proteksi Anti-Screenshot hanya aktif di real device release
+  if (kReleaseMode && (Platform.isAndroid || Platform.isIOS)) {
     try {
       await ScreenProtector.protectDataLeakageOn();
       dev.log('>>> [SECURITY]: Anti-Screenshot Aktif', name: 'APP_TEST');
@@ -36,7 +32,7 @@ void main() async {
     }
   }
 
-  // 3. Proteksi Anti-Root / Jailbreak / Emulator (Hanya Mobile di mode Release)
+  // 3. Proteksi Anti-Root / Jailbreak / Emulator (Hanya di mode Release)
   bool isDeviceCompromised = false;
   if (kReleaseMode && (Platform.isAndroid || Platform.isIOS)) {
     try {
